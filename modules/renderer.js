@@ -35,12 +35,8 @@ var ASTEROIDS = (function (module) {
             document.body.appendChild(renderer.domElement);
         },
         render: function () {
-            var asteroids = module.Model.asteroids;
-            for (var i = 0; i < asteroids.length; i++) {
-                asteroids[i].rotation.x += 0.01;
-                asteroids[i].rotation.y += 0.02;
-            }
 
+            module.AsteroidManager.animate();
             renderer.render(scene, camera);
         }
     }

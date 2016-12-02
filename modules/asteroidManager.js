@@ -1,12 +1,9 @@
 var ASTEROIDS = (function (module) {
 
     var OBJECTS_IN_POOL = 100;
-    function getRandom(min, max) {
-        return Math.random() * (max - min) + min;
-    }
 
     function createAsteriod() {
-        var geometry = new THREE.SphereGeometry(getRandom(0, 10), 32, 32);
+        var geometry = new THREE.SphereGeometry(module.getRandom(0, 10), 32, 32);
         //var material = new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
         //var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
         var material = new THREE.MeshPhongMaterial({
@@ -31,14 +28,21 @@ var ASTEROIDS = (function (module) {
             var result = [];
             for (var i = 0; i < OBJECTS_IN_POOL; i++) {
                 var asteroid = createAsteriod();
-                var radius = getRandom(innerRadius, outerRadius);
-                var angle1 = getRandom(0, Math.PI * 2);
-                var angle2 = getRandom(0, Math.PI * 2);
+                var radius = module.getRandom(innerRadius, outerRadius);
+                var angle1 = module.getRandom(0, Math.PI * 2);
+                var angle2 = module.getRandom(0, Math.PI * 2);
                 var point = calculatePoint(radius, angle1, angle2);
                 asteroid.position.set(point.x, point.y, point.z);
                 result.push(asteroid);
             }
             return result;
+        },
+        animate: function () {
+            var asteroids = module.Model.asteroids;
+            for (var i = 0; i < asteroids.length; i++) {
+                asteroids[i].rotation.x += module.getRandom(0.01, 0.1);
+                asteroids[i].rotation.y += module.getRandom(0.01, 0.1);
+            }
         }
     }
     return module;
