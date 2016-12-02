@@ -13,14 +13,32 @@ var ASTEROIDS = (function (module) {
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
             camera.position.z = 40;
 
-            /*
-            var geometry = new THREE.BoxGeometry( 200, 200, 200 );
-            var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+            var imagePrefix = "assets/purplenebula_";
+	          var directions  = ["ft", "lf", "up", "dn", "rt", "bk"];
+	          var imageSuffix = ".png";
+	          var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );
+
+            var dir = directions.map(function (a) {
+                return  imagePrefix + a + imageSuffix;
+            });
+
+            var textureCube = new THREE.CubeTextureLoader().load( dir );
+
+            var cubeShader = THREE.ShaderLib[ "cube" ];
+				    var cubeMaterial = new THREE.ShaderMaterial( {
+					      fragmentShader: cubeShader.fragmentShader,
+					      vertexShader: cubeShader.vertexShader,
+					      uniforms: cubeShader.uniforms,
+					      depthWrite: false,
+					      side: THREE.BackSide
+				    } );
+				    cubeMaterial.uniforms[ "tCube" ].value = textureCube;
+				    var cubeMesh = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), cubeMaterial );
+
             scene = new THREE.Scene();
-            mesh = new THREE.Mesh( geometry, material );
-            scene.add( mesh );
-            //*/
-            scene = new THREE.Scene();
+
+	          scene.add( cubeMesh );
+
             module.Model.asteroids.map(function (item) {
                 scene.add(item);
             });

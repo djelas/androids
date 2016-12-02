@@ -3,18 +3,18 @@ var ASTEROIDS = (function (module) {
     var OBJECTS_IN_POOL = 100;
 
     function createAsteriod() {
-        var loader = new THREE.OBJLoader(); 
-        var container = new THREE.Object3D(); 
-        var material = new THREE.MeshBasicMaterial( 
-            {map: THREE.ImageUtils.loadTexture('assets/AM1.jpg')}); 
-            // {color: 0x00ff00}); 
-        loader.load( 'assets/asteroid1.obj' , function ( mesh ) { 
-            mesh.children[0].geometry.computeFaceNormals(); 
-            mesh.children[0].geometry.computeVertexNormals(); 
-            mesh.children[0].material = material; 
-            container.add( mesh ); 
-        }); 
-        return container; 
+        var loader = new THREE.OBJLoader();
+        var container = new THREE.Object3D();
+        var material = new THREE.MeshBasicMaterial(
+            {map: THREE.ImageUtils.loadTexture('assets/AM1.jpg')});
+            // {color: 0x00ff00});
+        loader.load( 'assets/asteroid1.obj' , function ( mesh ) {
+            mesh.children[0].geometry.computeFaceNormals();
+            mesh.children[0].geometry.computeVertexNormals();
+            mesh.children[0].material = material;
+            container.add( mesh );
+        });
+        return container;
     }
 
     function calculatePoint(r, s, t) {

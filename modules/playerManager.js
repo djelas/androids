@@ -4,7 +4,7 @@ var ASTEROIDS = (function(module){
             create: function() {
                 player = new THREE.Object3D();
                 player.position = new THREE.Vector3(0, 0 , 0);
-                player.speed = 3;
+                player.speed = 0;
                 return player;
             },
             rotate: function(delta, input) {
@@ -16,10 +16,10 @@ var ASTEROIDS = (function(module){
                         player.rotation.x += delta * 2;
                     }
                     else if (input[1] === 1) {
-                        player.rotation.y -= delta * 2;
+                        player.rotation.y += delta * 2;
                     }
                     else if (input[3] === 1) {
-                        player.rotation.y += delta * 2;
+                        player.rotation.y -= delta * 2;
                     }
                 }
             },
