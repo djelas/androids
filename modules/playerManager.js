@@ -4,7 +4,7 @@ var ASTEROIDS = (function(module){
             create: function() {
                 player = new THREE.Object3D();
                 player.position = new THREE.Vector3(0, 0 , 0);
-                player.speed = 1;
+                player.speed = 3;
                 return player;
             },
             rotate: function(delta, input) {

@@ -1,22 +1,20 @@
 var ASTEROIDS = (function (module) {
 
-    var OBJECTS_IN_POOL = 10;
-    var mesh;
+    var OBJECTS_IN_POOL = 100;
 
     function createAsteriod() {
-        var loader = new THREE.OBJLoader();
-        var container = new THREE.Object3D();
-        var texture = THREE.ImageUtils.loadTexture('assets/AM1.jpg');
-        var material = new THREE.MeshBasicMaterial({map: texture});
-
-        loader.load( 'assets/asteroid1.obj', function (m) {
-            m.children[0].geometry.computeFaceNormals();
-            m.children[0].geometry.computeVertexNormals();
-            m.children[0].material = material;
-            container.add(m);
-        });
-
-        return container;
+        var loader = new THREE.OBJLoader(); 
+        var container = new THREE.Object3D(); 
+        var material = new THREE.MeshBasicMaterial( 
+            {map: THREE.ImageUtils.loadTexture('assets/AM1.jpg')}); 
+            // {color: 0x00ff00}); 
+        loader.load( 'assets/asteroid1.obj' , function ( mesh ) { 
+            mesh.children[0].geometry.computeFaceNormals(); 
+            mesh.children[0].geometry.computeVertexNormals(); 
+            mesh.children[0].material = material; 
+            container.add( mesh ); 
+        }); 
+        return container; 
     }
 
     function calculatePoint(r, s, t) {
@@ -29,31 +27,21 @@ var ASTEROIDS = (function (module) {
     var generateFlag = false;
     function generate(innerRadius, outerRadius) {
         var result = [];
-        if (mesh) {
-            for (var i = 0; i < OBJECTS_IN_POOL; i++) {
-                var asteroid = createAsteriod();
-                //asteroid.scale.set(0.1, 0.1, 0.1);
-                var radius = module.getRandom(innerRadius, outerRadius);
-                var angle1 = module.getRandom(0, Math.PI * 2);
-                var angle2 = module.getRandom(0, Math.PI * 2);
-                var point = calculatePoint(radius, angle1, angle2);
-                asteroid.position.set(point.x, point.y, point.z);
-                result.push(asteroid);
-            }
+        for (var i = 0; i < OBJECTS_IN_POOL; i++) {
+            var asteroid = createAsteriod();
+            asteroid.scale.set(0.1, 0.1, 0.1);
+            var radius = module.getRandom(innerRadius, outerRadius);
+            var angle1 = module.getRandom(0, Math.PI * 2);
+            var angle2 = module.getRandom(0, Math.PI * 2);
+            var point = calculatePoint(radius, angle1, angle2);
+            asteroid.position.set(point.x, point.y, point.z);
+            result.push(asteroid);
         }
-        else {
-            generateFlag = arguments;
-        }
+
         return result;
     };
     module.AsteroidManager = {
         init: function() {
-            module.loader.load( 'assets/asteroid1.obj', function (m) {
-                mesh = m;
-                if (generateFlag) {
-                    generate.apply(null, generateFlag);
-                }
-            });
         },
         generate: generate,
         animate: function (timedelta) {
