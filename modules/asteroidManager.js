@@ -9,7 +9,6 @@ var ASTEROIDS = (function (module) {
             {map: THREE.ImageUtils.loadTexture('assets/AM1.jpg')});
             // {color: 0x00ff00});
         loader.load( 'assets/asteroid1.obj' , function ( mesh ) {
-            console.log(mesh);
             mesh.children[0].geometry.computeFaceNormals();
             mesh.children[0].geometry.computeVertexNormals();
             mesh.children[0].material = material;
