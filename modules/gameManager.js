@@ -9,6 +9,8 @@ var ASTEROIDS = (function(module){
         requestAnimationFrame(game.loop);
         var timedelta = clock.getDelta();
         var buffer = module.Input.getBuffer();
+        module.PlayerManager.rotate(timedelta, buffer);
+        module.PlayerManager.translate(timedelta);
         if (buffer[4] === 0) {
             toogled = false;
         }

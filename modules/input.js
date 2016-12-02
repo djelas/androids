@@ -58,7 +58,6 @@ var ASTEROIDS = (function (module) {
     });
 
     input.getBuffer = function () {
-        console.log('getBuffer: ', buffer);
         return buffer;
     };
 

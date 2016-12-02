@@ -1,5 +1,13 @@
 var ASTEROIDS = (function (module) {
     var renderer, mesh, scene, camera;
+
+    function calculatePoint(r, s, t) {
+        x = r * Math.cos(s) * Math.sin(t)
+        y = r * Math.sin(s) * Math.sin(t)
+        z = r * Math.cos(t)
+        return new THREE.Vector3(x, y, z);
+    }
+
     module.Renderer = {
         init: function () {
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100);
@@ -36,6 +44,10 @@ var ASTEROIDS = (function (module) {
         },
         render: function (timedelta) {
             module.AsteroidManager.animate(timedelta);
+            var playerPosition = module.Model.player.position;
+            var playerRotation = module.Model.player.rotation.toVector3();
+            camera.position.copy(playerPosition);
+            camera.lookAt(module.Model.player.localToWorld(new THREE.Vector3(playerRotation.x, playerRotation.y, playerRotation.z - 1)));
             renderer.render(scene, camera);
         }
     }

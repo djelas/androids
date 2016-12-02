@@ -9,7 +9,7 @@ var ASTEROIDS = (function (module) {
         var material = new THREE.MeshPhongMaterial({
             color: 0x156289,
             emissive: 0x072534,
-            side: THREE.DoubleSide,
+            //side: THREE.DoubleSide,
             shading: THREE.FlatShading
         })
         var sphere = new THREE.Mesh(geometry, material);
