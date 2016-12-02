@@ -3,23 +3,25 @@ var ASTEROIDS = (function (module) {
     var OBJECTS_IN_POOL = 100;
 
     function createAsteriod() {
-        var geometry = new THREE.SphereGeometry(module.getRandom(0, 10), 32, 32);
-        //var material = new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
-        //var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-        var material = new THREE.MeshPhongMaterial({
-            color: 0x156289,
-            emissive: 0x072534,
-            side: THREE.DoubleSide,
-            shading: THREE.FlatShading
-        })
-        var sphere = new THREE.Mesh(geometry, material);
-        return sphere;
+        var loader = new THREE.OBJLoader();
+        var container = new THREE.Object3D();
+        var material = new THREE.MeshBasicMaterial(
+            {map: THREE.ImageUtils.loadTexture('assets/AM1.jpg')});
+            // {color: 0x00ff00});
+        loader.load( 'assets/asteroid1.obj' , function ( mesh ) {
+            console.log(mesh);
+            mesh.children[0].geometry.computeFaceNormals();
+            mesh.children[0].geometry.computeVertexNormals();
+            mesh.children[0].material = material;
+            container.add( mesh );
+        });
+        return container;
     }
 
     function calculatePoint(r, s, t) {
-        x = r * Math.cos(s) * Math.sin(t)
-        y = r * Math.sin(s) * Math.sin(t)
-        z = r * Math.cos(t)
+        var x = r * Math.cos(s) * Math.sin(t);
+        var y = r * Math.sin(s) * Math.sin(t);
+        var z = r * Math.cos(t);
         return new THREE.Vector3(x, y, z);
     }
 
@@ -28,6 +30,7 @@ var ASTEROIDS = (function (module) {
             var result = [];
             for (var i = 0; i < OBJECTS_IN_POOL; i++) {
                 var asteroid = createAsteriod();
+                asteroid.scale.set(0.1, 0.1, 0.1);
                 var radius = module.getRandom(innerRadius, outerRadius);
                 var angle1 = module.getRandom(0, Math.PI * 2);
                 var angle2 = module.getRandom(0, Math.PI * 2);
