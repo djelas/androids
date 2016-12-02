@@ -34,9 +34,8 @@ var ASTEROIDS = (function (module) {
 
             document.body.appendChild(renderer.domElement);
         },
-        render: function () {
-
-            module.AsteroidManager.animate();
+        render: function (timedelta) {
+            module.AsteroidManager.animate(timedelta);
             renderer.render(scene, camera);
         }
     }

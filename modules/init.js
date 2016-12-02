@@ -7,7 +7,8 @@ var ASTEROIDS = (function(module){
         model.asteroids = module.AsteroidManager.generate(0, 100);
         model.player = module.PlayerManager.create();
         module.Renderer.init();
-        module.TimeSync.init(module.GameManager);
+        module.GameManager.loop();
+        // module.TimeSync.init(module.GameManager);
     }
 
     return module;

@@ -37,11 +37,11 @@ var ASTEROIDS = (function (module) {
             }
             return result;
         },
-        animate: function () {
+        animate: function (timedelta) {
             var asteroids = module.Model.asteroids;
             for (var i = 0; i < asteroids.length; i++) {
-                asteroids[i].rotation.x += module.getRandom(0.01, 0.1);
-                asteroids[i].rotation.y += module.getRandom(0.01, 0.1);
+                asteroids[i].rotation.x += 0.1 * timedelta;
+                asteroids[i].rotation.y += 0.1 * timedelta;
             }
         }
     }
