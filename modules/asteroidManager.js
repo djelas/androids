@@ -43,8 +43,8 @@ var ASTEROIDS = (function (module) {
         animate: function (timedelta) {
             var asteroids = module.Model.asteroids;
             for (var i = 0; i < asteroids.length; i++) {
-                asteroids[i].rotation.x += 0.1 * timedelta;
-                asteroids[i].rotation.y += 0.1 * timedelta;
+                asteroids[i].rotation.x += module.getRandom(1, 5) * timedelta / 5 * i / asteroids.length;
+                asteroids[i].rotation.y += module.getRandom(1, 5) * timedelta / 5 * i / asteroids.length;
             }
         }
     }
