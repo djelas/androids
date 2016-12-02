@@ -26,7 +26,6 @@ var ASTEROIDS = (function(module){
             translate: function(delta) {
                 if (player) {
                     player.position.z -= delta * player.speed;
-                    console.log(player.position)
                 }
             }
         }

@@ -1,33 +1,38 @@
 var ASTEROIDS = (function (module) {
 
-    var OBJECTS_IN_POOL = 100;
+    var OBJECTS_IN_POOL = 10;
+    var mesh;
 
     function createAsteriod() {
-        var geometry = new THREE.SphereGeometry(module.getRandom(0, 10), 32, 32);
-        //var material = new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x009900, shininess: 30, shading: THREE.FlatShading } )
-        //var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-        var material = new THREE.MeshPhongMaterial({
-            color: 0x156289,
-            emissive: 0x072534,
-            //side: THREE.DoubleSide,
-            shading: THREE.FlatShading
-        })
-        var sphere = new THREE.Mesh(geometry, material);
-        return sphere;
+        var loader = new THREE.OBJLoader();
+        var container = new THREE.Object3D();
+        var texture = THREE.ImageUtils.loadTexture('assets/AM1.jpg');
+        var material = new THREE.MeshBasicMaterial({map: texture});
+
+        loader.load( 'assets/asteroid1.obj', function (m) {
+            m.children[0].geometry.computeFaceNormals();
+            m.children[0].geometry.computeVertexNormals();
+            m.children[0].material = material;
+            container.add(m);
+        });
+
+        return container;
     }
 
     function calculatePoint(r, s, t) {
-        x = r * Math.cos(s) * Math.sin(t)
-        y = r * Math.sin(s) * Math.sin(t)
-        z = r * Math.cos(t)
+        var x = r * Math.cos(s) * Math.sin(t);
+        var y = r * Math.sin(s) * Math.sin(t);
+        var z = r * Math.cos(t);
         return new THREE.Vector3(x, y, z);
     }
 
-    module.AsteroidManager = {
-        generate: function (innerRadius, outerRadius) {
-            var result = [];
+    var generateFlag = false;
+    function generate(innerRadius, outerRadius) {
+        var result = [];
+        if (mesh) {
             for (var i = 0; i < OBJECTS_IN_POOL; i++) {
                 var asteroid = createAsteriod();
+                //asteroid.scale.set(0.1, 0.1, 0.1);
                 var radius = module.getRandom(innerRadius, outerRadius);
                 var angle1 = module.getRandom(0, Math.PI * 2);
                 var angle2 = module.getRandom(0, Math.PI * 2);
@@ -35,8 +40,22 @@ var ASTEROIDS = (function (module) {
                 asteroid.position.set(point.x, point.y, point.z);
                 result.push(asteroid);
             }
-            return result;
+        }
+        else {
+            generateFlag = arguments;
+        }
+        return result;
+    };
+    module.AsteroidManager = {
+        init: function() {
+            module.loader.load( 'assets/asteroid1.obj', function (m) {
+                mesh = m;
+                if (generateFlag) {
+                    generate.apply(null, generateFlag);
+                }
+            });
         },
+        generate: generate,
         animate: function (timedelta) {
             var asteroids = module.Model.asteroids;
             for (var i = 0; i < asteroids.length; i++) {
